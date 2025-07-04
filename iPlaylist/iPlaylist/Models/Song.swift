@@ -8,7 +8,7 @@
 import Foundation
 
 struct Song: Identifiable, Hashable {
-    let id: UUID = UUID();
+    let id: Int; // Should be UUID, but Int for now
     let name: String;
     let artist: String;
     let album:  String;
@@ -16,7 +16,8 @@ struct Song: Identifiable, Hashable {
     private(set) var plays: Int32 = 0;
     let link: String;
     let image: String;
-    init(name: String, artist: String, album: String, link: String, image: String) {
+    init(id: Int = Int.random(in: 0...100), name: String, artist: String, album: String, link: String, image: String) {
+        self.id = id;
         self.name = name
         self.artist = artist
         self.album = album
