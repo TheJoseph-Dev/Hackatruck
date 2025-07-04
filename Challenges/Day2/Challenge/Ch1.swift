@@ -45,8 +45,8 @@ struct Ch1: View {
                         RoundedRectangle(cornerRadius: 5)
                             .stroke(Color.gray, lineWidth: 0.4)
                     )
-                    .onChange(of: distance) { _, newValue in
-                        updateCurrentObject(newValue);
+                    .onChange(of: distance) { _, _ in
+                        updateCurrentObject();
                     }
             }
             .padding(.bottom)
@@ -61,8 +61,8 @@ struct Ch1: View {
                         RoundedRectangle(cornerRadius: 5)
                             .stroke(Color.gray, lineWidth: 0.4)
                     )
-                    .onChange(of: time) { _, newValue in
-                        updateCurrentObject(newValue);
+                    .onChange(of: time) { _, _ in
+                        updateCurrentObject();
                     }
             }
             
@@ -100,8 +100,8 @@ struct Ch1: View {
         Spacer()
     }
     
-    private func updateCurrentObject(_ newValue: Float) {
-        let velocity = newValue / time
+    private func updateCurrentObject() {
+        let velocity = distance / time
         var index = 0
         while index < Ch1.objects.count && velocity > Float(Ch1.objects[index].velocityRange[1]) {
             index += 1
