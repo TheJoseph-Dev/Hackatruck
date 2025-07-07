@@ -27,7 +27,7 @@ struct AddSongView: View {
             Spacer()
             
             Button("Add") {
-                playlist.addSong(song: Song(name: songName, artist: artistName, album: albumTitle, link: songLink, image: imageURL))
+                playlist.addSong(song: Song(name: songName, artist: artistName, album: albumTitle, link: songLink, cover: imageURL))
                 dismiss();
             }
         } .padding()

@@ -17,6 +17,10 @@
 		61F720DB2DFCC3F500E657EF /* Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F720DA2DFCC3F500E657EF /* Song.swift */; };
 		61F720DD2DFCCA1A00E657EF /* Playlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F720DC2DFCCA1A00E657EF /* Playlist.swift */; };
 		61F720E12DFCD60400E657EF /* AddSongView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F720E02DFCD60400E657EF /* AddSongView.swift */; };
+		61FAF7982E04A58D00A42424 /* PlaySongView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61FAF7972E04A58D00A42424 /* PlaySongView.swift */; };
+		61FAF79A2E04AD4100A42424 /* SongRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61FAF7992E04AD4100A42424 /* SongRowView.swift */; };
+		61FAF79C2E04BDF300A42424 /* PlayingSongBackground.metal in Sources */ = {isa = PBXBuildFile; fileRef = 61FAF79B2E04BDF300A42424 /* PlayingSongBackground.metal */; };
+		61FAF79E2E04C63B00A42424 /* LikeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61FAF79D2E04C63B00A42424 /* LikeButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +35,10 @@
 		61F720DA2DFCC3F500E657EF /* Song.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Song.swift; sourceTree = "<group>"; };
 		61F720DC2DFCCA1A00E657EF /* Playlist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Playlist.swift; sourceTree = "<group>"; };
 		61F720E02DFCD60400E657EF /* AddSongView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSongView.swift; sourceTree = "<group>"; };
+		61FAF7972E04A58D00A42424 /* PlaySongView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaySongView.swift; sourceTree = "<group>"; };
+		61FAF7992E04AD4100A42424 /* SongRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongRowView.swift; sourceTree = "<group>"; };
+		61FAF79B2E04BDF300A42424 /* PlayingSongBackground.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = PlayingSongBackground.metal; sourceTree = "<group>"; };
+		61FAF79D2E04C63B00A42424 /* LikeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +71,10 @@
 		61F720CA2DFCC3BE00E657EF /* iPlaylist */ = {
 			isa = PBXGroup;
 			children = (
+				61FAF79D2E04C63B00A42424 /* LikeButton.swift */,
+				61FAF79B2E04BDF300A42424 /* PlayingSongBackground.metal */,
+				61FAF7992E04AD4100A42424 /* SongRowView.swift */,
+				61FAF7972E04A58D00A42424 /* PlaySongView.swift */,
 				61F720D92DFCC3D100E657EF /* Models */,
 				61F720CB2DFCC3BE00E657EF /* iPlaylistApp.swift */,
 				61F720CD2DFCC3BE00E657EF /* MainView.swift */,
@@ -167,9 +179,13 @@
 				61AFA67A2E00AFB700499216 /* PlaylistView.swift in Sources */,
 				61F720CE2DFCC3BE00E657EF /* MainView.swift in Sources */,
 				61F720CC2DFCC3BE00E657EF /* iPlaylistApp.swift in Sources */,
+				61FAF79E2E04C63B00A42424 /* LikeButton.swift in Sources */,
+				61FAF7982E04A58D00A42424 /* PlaySongView.swift in Sources */,
 				61AFA67C2E00D04E00499216 /* PlaylistStatusView.swift in Sources */,
 				61F720E12DFCD60400E657EF /* AddSongView.swift in Sources */,
+				61FAF79A2E04AD4100A42424 /* SongRowView.swift in Sources */,
 				61AFA6782E00AC8600499216 /* SearchView.swift in Sources */,
+				61FAF79C2E04BDF300A42424 /* PlayingSongBackground.metal in Sources */,
 				61F720DD2DFCCA1A00E657EF /* Playlist.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

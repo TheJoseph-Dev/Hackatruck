@@ -15,14 +15,14 @@ struct Song: Identifiable, Hashable {
     private(set) var popularity: Int32 = 0;
     private(set) var plays: Int32 = 0;
     let link: String;
-    let image: String;
-    init(id: Int = Int.random(in: 0...100), name: String, artist: String, album: String, link: String, image: String) {
+    let cover: String;
+    init(id: Int = Int.random(in: 0...100), name: String, artist: String, album: String, link: String, cover: String) {
         self.id = id;
         self.name = name
         self.artist = artist
         self.album = album
         self.link = link
-        self.image = image;
+        self.cover = cover;
     }
     
 }
