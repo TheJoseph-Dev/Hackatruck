@@ -14,18 +14,23 @@ struct ItemRow: View {
             
             HStack {
                 AsyncImage(url: URL(string: self.item.image ?? "")) { image in
-                    image.resizable()
+                    image
+                        .resizable()
                 } placeholder: {
                     ProgressView().progressViewStyle(.circular)
                 }
                 .aspectRatio(contentMode: .fit)
-                .frame(width: 80, height: 80)
+                .frame(width: 100, height: 100)
                 
                 Spacer()
                 
-                Text(item.title ?? "")
+                VStack {
+                    Text(item.title ?? "")
+                        .font(.title2)
+                    Text("$" + String(item.price ?? -1.0))
+                        .font(.subheadline)
+                }
             }
-            .padding(16)
         }
         .foregroundColor(.black)
         

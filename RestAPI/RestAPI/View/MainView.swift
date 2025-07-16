@@ -11,7 +11,10 @@ struct MainView: View {
     
     // @StateObject is in between the @EnvironmentObject
     // @StateObject is owned by view and recreated every time the view is loaded
-    @StateObject var api: API = API();
+    @StateObject var api: API = API(apiURL: "http://127.0.0.1:1880");
+    
+    @State var showAddItemView: Bool = false;
+    
     var body: some View {
         ScrollView {
             LazyVStack {
@@ -24,6 +27,19 @@ struct MainView: View {
         .padding()
         .onAppear() {
             api.fetch()
+        }
+        .navigationTitle(Text("Shop"))
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button {
+                    showAddItemView = true;
+                } label: {
+                    Image(systemName: "plus")
+                }
+            }
+        }
+        .sheet(isPresented: $showAddItemView) {
+            AddItemView(api: self.api)
         }
     }
     
