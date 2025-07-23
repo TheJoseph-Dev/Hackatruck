@@ -45,7 +45,7 @@ struct ImagePicker: UIViewControllerRepresentable {
 
 struct MainView: View {
     @State private var showImagePicker = false
-    @State private var selectedImage: UIImage? = (UIImage(named: "japan-street-r") ?? nil)
+    @State private var selectedImage: UIImage? = (UIImage(named: "jjj") ?? nil)
 
     var body: some View {
         VStack {
@@ -55,7 +55,9 @@ struct MainView: View {
                     .scaledToFit()
                     .frame(height: 200)
                     .onAppear() {
-                        processImage(selectedImage!)
+                        let labels = YOLO.process(image: selectedImage!)
+                        
+                        print(labels)
                     }
             } else {
                 Image(systemName: "photo")
@@ -74,7 +76,7 @@ struct MainView: View {
             ImagePicker { image in
                 selectedImage = image
                 let rImage = resizeImage(image, targetSize: CGSize(width: 416, height: 416))
-                processImage(rImage)
+                //processImage(rImage)
             }
         }
     }
@@ -97,34 +99,7 @@ struct MainView: View {
         return newImage!
     }
 
-    func processImage(_ image: UIImage) {
-        guard let model = try? VNCoreMLModel(for: YOLOv3Tiny().model) else {
-            print("Failed to load CoreML model")
-            return
-        }
-        
-        let request = VNCoreMLRequest(model: model) { request, error in
-            if let results = request.results as? [VNRecognizedObjectObservation] {
-                print(results.count)
-                for observation in results {
-                    for imgLabel in observation.labels {
-                        print("Label: \(imgLabel.identifier), Confidence: \(imgLabel.confidence)")
-                    }
-                }
-            }
-        }
-        
-        guard let ciImage = CIImage(image: image) else {
-            print("Failed to convert UIImage to CIImage")
-            return
-        }
-        
-        let handler = VNImageRequestHandler(ciImage: ciImage, options: [:])
-        try? handler.perform([request])
-    }
-    
 }
-
 
 #Preview {
     MainView()
