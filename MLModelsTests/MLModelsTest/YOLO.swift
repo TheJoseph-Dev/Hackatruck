@@ -11,27 +11,55 @@ import Vision
 import AVFoundation
 
 class YOLO {
-    struct ImageLabel {
+    struct ImageLabel: Identifiable {
+        let id = UUID()
         let name: String
-        let aprxDepth: Double
-        init(name: String, aprxDepth: Double) {
+        let boundingBox: CGRect // Normalized bounding box
+        
+        init(name: String, boundingBox: CGRect) {
             self.name = name
-            self.aprxDepth = aprxDepth
+            self.boundingBox = boundingBox
         }
+
+        /**
+         Heuristic for determining the depth of an object based on the proportion of the area
+         it occupies on the screen
+
+         - Returns: A `Double` between 0 (close) and 1 (far)
+        */
+        func getAproximateDepth() -> Double {
+            return 1.0-(self.boundingBox.origin.x * self.boundingBox.origin.y);
+        }
+
+        func screenSpaceBoundingBox(imageSize: CGSize) -> CGRect {
+            let width = boundingBox.width * imageSize.width
+            let height = boundingBox.height * imageSize.height
+            let x = boundingBox.minX * imageSize.width
+            // Flip y-axis (Vision's origin is bottom-left, UIKit is top-left)
+            let y = (1 - self.boundingBox.minY - self.boundingBox.height) * imageSize.height
+            return CGRect(x: x, y: y, width: width, height: height)
+        }
+        /*
+            Rectangle()
+            .path(in: convertBoundingBox(label.boundingBox, imageSize: viewSize))
+            .stroke(Color.red, lineWidth: 2)
+        */
     }
+
+    static let model = try? VNCoreMLModel(for: YOLOv3Tiny().model)
     
     static func process(image: UIImage) -> [ImageLabel] {
-        guard let model = try? VNCoreMLModel(for: YOLOv3Tiny().model) else {
+        guard let model = model else { 
             print("Failed to load CoreML model")
             return []
         }
-        
+
         var imgLabels: [ImageLabel] = []
         let request = VNCoreMLRequest(model: model) { request, error in
             if let results = request.results as? [VNRecognizedObjectObservation] {
                 print(results.count)
                 for observation in results {
-                    imgLabels.append(ImageLabel(name: observation.labels[0].identifier, aprxDepth: 0))
+                    imgLabels.append(ImageLabel(name: observation.labels[0].identifier, boundingBox: observation.boundingBox))
                     for imgLabel in observation.labels {
                         print("Label: \(imgLabel.identifier), Confidence: \(imgLabel.confidence)")
                     }
@@ -52,7 +80,7 @@ class YOLO {
     
 }
 
-
+/*
  class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate {
      
      var bufferSize: CGSize = .zero
@@ -166,4 +194,4 @@ class YOLO {
      }
  }
  
-
+*/
