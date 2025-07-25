@@ -11,35 +11,70 @@ import Vision
 import AVFoundation
 
 class YOLO {
-    struct ImageLabel {
+    struct ImageLabel: Identifiable, Equatable {
+        let id = UUID()
         let name: String
-        let aprxDepth: Double
-        init(name: String, aprxDepth: Double) {
+        let confidence: Float
+        let boundingBox: CGRect // Normalized bounding box
+        
+        init(name: String, confidence: Float, boundingBox: CGRect) {
             self.name = name
-            self.aprxDepth = aprxDepth
+            self.confidence = confidence
+            self.boundingBox = boundingBox
         }
+
+        /**
+         Heuristic for determining the depth of an object based on the proportion of the area
+         it occupies on the screen
+
+         - Returns: A `Double` between 0 (close) and 1 (far)
+        */
+        func getApproximateDepth() -> Double {
+            return 1.0-(self.boundingBox.width * self.boundingBox.height);
+        }
+
+        func screenSpaceBoundingBox(imageSize: CGSize) -> CGRect {
+            let width = boundingBox.width * imageSize.width
+            let height = boundingBox.height * imageSize.height
+            let x = boundingBox.minX * imageSize.width
+            // Flip y-axis (Vision's origin is bottom-left, UIKit is top-left)
+            let y = (1 - self.boundingBox.minY - self.boundingBox.height) * imageSize.height
+            return CGRect(x: x, y: y, width: width, height: height)
+        }
+        /*
+            Rectangle()
+            .path(in: convertBoundingBox(label.boundingBox, imageSize: viewSize))
+            .stroke(Color.red, lineWidth: 2)
+        */
     }
+
+    static let model = try? VNCoreMLModel(for: YOLOv3().model)
     
-    static func process(image: UIImage) -> [ImageLabel] {
-        guard let model = try? VNCoreMLModel(for: YOLOv3Tiny().model) else {
+    static func process(image: UIImage, threshold: Float = 0.6) -> [ImageLabel] {
+        let rImage = YOLO.resizeImage(image, targetSize: image.size) ?? image
+        guard let model = model else {
             print("Failed to load CoreML model")
             return []
         }
-        
+
         var imgLabels: [ImageLabel] = []
         let request = VNCoreMLRequest(model: model) { request, error in
             if let results = request.results as? [VNRecognizedObjectObservation] {
                 print(results.count)
                 for observation in results {
-                    imgLabels.append(ImageLabel(name: observation.labels[0].identifier, aprxDepth: 0))
-                    for imgLabel in observation.labels {
-                        print("Label: \(imgLabel.identifier), Confidence: \(imgLabel.confidence)")
-                    }
+                    let best = observation.labels[0]
+                    print("Label: " + String(best.identifier) + " - Confidence: " + String(best.confidence))
+                    if best.confidence < threshold { continue; }
+                    imgLabels.append(ImageLabel(name: best.identifier, confidence: best.confidence, boundingBox: observation.boundingBox))
+                        //print(best.identifier)
+//                    for imgLabel in observation.labels {
+//                        print("Label: \(imgLabel.identifier), Confidence: \(imgLabel.confidence)")
+//                    }
                 }
             }
         }
         
-        guard let ciImage = CIImage(image: image) else {
+        guard let ciImage = CIImage(image: rImage) else {
             print("Failed to convert UIImage to CIImage")
             return []
         }
@@ -50,9 +85,28 @@ class YOLO {
         return imgLabels
     }
     
+    private static func resizeImage(_ image: UIImage, targetSize: CGSize) -> UIImage? {
+        let size = image.size
+
+        let widthRatio  = targetSize.width  / size.width
+        let heightRatio = targetSize.height / size.height
+
+        let scaleFactor = min(widthRatio, heightRatio)
+
+        let newSize = CGSize(width: size.width * scaleFactor,
+                             height: size.height * scaleFactor)
+
+        UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
+        image.draw(in: CGRect(origin: .zero, size: newSize))
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+
+        return newImage
+    }
+
 }
 
-
+/*
  class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate {
      
      var bufferSize: CGSize = .zero
@@ -166,4 +220,4 @@ class YOLO {
      }
  }
  
-
+*/

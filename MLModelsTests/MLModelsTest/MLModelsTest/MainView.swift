@@ -75,28 +75,10 @@ struct MainView: View {
         .sheet(isPresented: $showImagePicker) {
             ImagePicker { image in
                 selectedImage = image
-                let rImage = resizeImage(image, targetSize: CGSize(width: 416, height: 416))
+                //let rImage = resizeImage(image, targetSize: CGSize(width: 416, height: 416))
                 //processImage(rImage)
             }
         }
-    }
-    
-    func resizeImage(_ image: UIImage, targetSize: CGSize) -> UIImage {
-        let size = image.size
-
-        let widthRatio  = targetSize.width  / size.width
-        let heightRatio = targetSize.height / size.height
-
-        let scaleFactor = min(widthRatio, heightRatio)
-
-        let newSize = CGSize(width: size.width * scaleFactor, height: size.height * scaleFactor)
-        
-        UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
-        image.draw(in: CGRect(origin: .zero, size: newSize))
-        let newImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-
-        return newImage!
     }
 
 }

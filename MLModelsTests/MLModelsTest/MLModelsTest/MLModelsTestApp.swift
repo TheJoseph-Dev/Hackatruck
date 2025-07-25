@@ -11,7 +11,7 @@ import SwiftUI
 struct MLModelsTestApp: App {
     var body: some Scene {
         WindowGroup {
-            MainView()
+            CameraViewWrapper()
         }
     }
 }
