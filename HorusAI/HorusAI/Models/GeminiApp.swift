@@ -29,12 +29,18 @@ class Gemini {
     
     private let apiKey = "AIzaSyC63SWM2BVhBXaUb-9UV3Ezf-QLuPrTT1g"
     
-    func createPrompt(from imageLabels: [YOLO.ImageLabel]) -> String {
-        var prompt = "Voce sera responsavel por guiar uma pessoa com deficiencia visual e descrever o ambiente ao redor dela com base nas informacoes coletadas do ambiente que serao passadas a seguir. Seja objetivo e breve, sem palavras desnecesarias. Alem disso, se, e somente se, possivel, tente induzir o ambiente em que ela pode estar com base nisso. Interprete os seguintes dados de forma a indicar se um objeto esta próximo ou nao (0 = perto) (1 = longe) e utilize palavras que expressam a probabilidade de realmente existir tal objeto. Dados: ";
+    func createPrompt(from imageLabels: [YOLO.ImageLabel], at location: GPSAPI.QueryData?, with language: String) -> String {
+        var prompt = "Escreva o texto em: \(language). Voce sera responsavel por guiar uma pessoa com deficiencia visual e descrever o ambiente ao redor dela com base nas informacoes coletadas do ambiente que serao passadas a seguir. Seja objetivo e breve, sem palavras desnecesarias, dispense introducoes. Alem disso, se, e somente se, possivel, tente induzir o ambiente em que ela pode estar com base nisso. Interprete os seguintes dados de forma a indicar se um objeto esta próximo ou nao (0 = perto) (1 = longe) e utilize palavras que expressam a probabilidade de realmente existir tal objeto. Quanto a localizacao, ela se refere somente a posicao atual do usuario e seu ponto de referencia, nao diga as coordenadas, identifique a localizacao aproximada com base nela. Dados: ";
         
         for imgLabel in imageLabels {
             prompt += "Label: \(imgLabel.name) - Confidence: \(imgLabel.confidence) - Distance: \(imgLabel.getApproximateDepth()) "
         }
+        
+        prompt += ", Localizacao: "
+        if let location = location {
+            prompt += "Posicao atual: (latitude: \(location.location.coordinate.latitude), longitude: \(location.location.coordinate.longitude)) - Ponto de referencia mais proximo: \(location.point.name) (latitude: \(location.point.coordinate.latitude), longitude: \(location.point.coordinate.longitude), distancia: \(location.distance))"
+        }
+        else { prompt += "Nao foi possivel obter"; }
         
         return prompt;
     }

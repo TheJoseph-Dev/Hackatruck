@@ -9,13 +9,6 @@ import SwiftUI
 import UIKit
 import AVFoundation
 
-/*
-    Put into info.plist:
-    <key>NSCameraUsageDescription</key>
-    <string>We need access to your camera to detect objects in real-time.</string>
-
-*/
-
 protocol CameraFrameDelegate: AnyObject {
     func didCapture(frame: UIImage)
 }
@@ -101,7 +94,7 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
     
     // Frame captured from camera
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
-        if self.wait(time: 0.2) { return }
+        if self.wait(time: 0.4) { return }
         
         guard let buffer = CMSampleBufferGetImageBuffer(sampleBuffer) else { return }
         let ciImage = CIImage(cvPixelBuffer: buffer)
@@ -189,13 +182,17 @@ struct CameraView: UIViewControllerRepresentable {
 
 
 struct CameraViewWrapper: View {
+    @EnvironmentObject var manager: ConfigurationManager
+    @Environment(\.dismiss) var dismiss
     @State private var predictions: [YOLO.ImageLabel] = []
     @State private var hasLoadedFramebuffers = false
-
+    @State private var canCall: Bool = false;
+    @State private var rippleProgress: Double = 0
+    
     var body: some View {
         ZStack(alignment: .topLeading) {
             CameraView(predictions: $predictions)
-                .ignoresSafeArea()
+                //.ignoresSafeArea()
 
             VStack(alignment: .leading, spacing: 10) {
                 ForEach(predictions, id: \.id) { label in
@@ -206,40 +203,62 @@ struct CameraViewWrapper: View {
             
             VStack {
                 Spacer()
-                Button(action: {
-                        Task {
-                            let prompt = Gemini.shared.createPrompt(from: self.predictions)
-                            let speechText = await Gemini.shared.call(prompt: prompt)
-                            Speecher.shared.speak(speechText)
-                        }
-                    }) {
-                    Image(systemName: "arrow.clockwise")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 30, height: 30)
-                        .foregroundColor(.white)
-                        .padding(25)
-                        .background(Color.blue)
-                        .clipShape(Circle())
-                        .shadow(radius: 5)
+                Button(action: {}) {
+                    HorusAIView(rippleProgress: $rippleProgress, discard: 1.0)
+                        .gesture(
+                            TapGesture(count: 2).onEnded {
+                                Speecher.shared.stopSpeaking()
+                                dismiss()
+                            }.exclusively(before: TapGesture(count: 1).onEnded {
+                                guard canCall else { return }
+                                canCall = false
+                                Task {
+                                    Speecher.shared.speak("Aguarde um momento enquanto obtemos informacoes do ambiente", language: manager.currentConfig.idioma, voice: manager.currentConfig.voz)
+                                    let gpsData = try await GPSAPI.shared.getClosestPoint()
+                                    let prompt = Gemini.shared.createPrompt(from: self.predictions, at: gpsData, with: manager.currentConfig.idioma)
+                                    let speechText = await Gemini.shared.call(prompt: prompt)
+                                    Speecher.shared.speak(speechText, language: manager.currentConfig.idioma, voice: manager.currentConfig.voz)
+                                    canCall = true
+                                }
+                            })
+                        )
+                        .simultaneousGesture(
+                            LongPressGesture(minimumDuration: Double(manager.currentConfig.toques))
+                                .onEnded { _ in
+                                    Speecher.shared.speak("Chamando numero de emergencia", language: manager.currentConfig.idioma, voice: manager.currentConfig.voz)
+                                }
+                        )
                 }
+                
                 .padding(.bottom, 40)
             }
         }
         .onAppear {
-            Speecher.shared.speak("Iniciando o HorusAI!")
+            Speecher.shared.speak("Iniciando o HorusAI! Aguarde um momento enquanto obtemos informacoes do ambiente", language: manager.currentConfig.idioma, voice: manager.currentConfig.voz)
         }
-        .onChange(of: predictions) { newPredictions in
+        .onChange(of: predictions) {
             if hasLoadedFramebuffers { return; }
             hasLoadedFramebuffers = true
 
             print("First predictions received!")
             Task {
-                let prompt = Gemini.shared.createPrompt(from: self.predictions)
+                
+                let gpsData = try await GPSAPI.shared.getClosestPoint()
+                print(gpsData?.point.name)
+                print("Generating prompt...")
+                let prompt = Gemini.shared.createPrompt(from: self.predictions, at: gpsData, with: manager.currentConfig.idioma)
+                print("Prompt: \(prompt)")
+                
+                print("Calling Gemini...")
                 let speechText = await Gemini.shared.call(prompt: prompt)
-                Speecher.shared.speak(speechText)
+                print("Response: \(speechText)")
+                
+                print("Speaking...")
+                Speecher.shared.speak(speechText, language: manager.currentConfig.idioma, voice: manager.currentConfig.voz)
+                canCall = true;
             }
         }
         
     }
+    
 }

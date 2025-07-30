@@ -16,6 +16,11 @@
 		616C59F72E3928E9000379AD /* GPSAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 616C59F32E3928E9000379AD /* GPSAPI.swift */; };
 		616C59F82E3928E9000379AD /* GeminiApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 616C59F42E3928E9000379AD /* GeminiApp.swift */; };
 		616C59FA2E3928F6000379AD /* HorusAIShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = 616C59F92E3928F6000379AD /* HorusAIShader.metal */; };
+		61A26CB22E3A7F5000617DE4 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61A26CB02E3A7F5000617DE4 /* MainView.swift */; };
+		61A26CB32E3A7F5000617DE4 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61A26CB12E3A7F5000617DE4 /* SettingsView.swift */; };
+		61A26CB92E3A7F8000617DE4 /* ConfigurationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61A26CB72E3A7F8000617DE4 /* ConfigurationManager.swift */; };
+		61A26CBC2E3AA22F00617DE4 /* HistoricoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61A26CBA2E3AA22F00617DE4 /* HistoricoView.swift */; };
+		61A26CBD2E3AA22F00617DE4 /* AjudaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61A26CBB2E3AA22F00617DE4 /* AjudaView.swift */; };
 		61E554EB2E37E2FE0083CF88 /* HorusAIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61E554EA2E37E2FE0083CF88 /* HorusAIApp.swift */; };
 		61E554EF2E37E3000083CF88 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 61E554EE2E37E3000083CF88 /* Assets.xcassets */; };
 		61E554F22E37E3000083CF88 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 61E554F12E37E3000083CF88 /* Preview Assets.xcassets */; };
@@ -32,6 +37,11 @@
 		616C59F32E3928E9000379AD /* GPSAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GPSAPI.swift; sourceTree = "<group>"; };
 		616C59F42E3928E9000379AD /* GeminiApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeminiApp.swift; sourceTree = "<group>"; };
 		616C59F92E3928F6000379AD /* HorusAIShader.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = HorusAIShader.metal; sourceTree = "<group>"; };
+		61A26CB02E3A7F5000617DE4 /* MainView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		61A26CB12E3A7F5000617DE4 /* SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		61A26CB72E3A7F8000617DE4 /* ConfigurationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigurationManager.swift; sourceTree = "<group>"; };
+		61A26CBA2E3AA22F00617DE4 /* HistoricoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoricoView.swift; sourceTree = "<group>"; };
+		61A26CBB2E3AA22F00617DE4 /* AjudaView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AjudaView.swift; sourceTree = "<group>"; };
 		61E554E72E37E2FE0083CF88 /* HorusAI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HorusAI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		61E554EA2E37E2FE0083CF88 /* HorusAIApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorusAIApp.swift; sourceTree = "<group>"; };
 		61E554EE2E37E3000083CF88 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -51,6 +61,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		61A26CB82E3A7F8000617DE4 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				61A26CB72E3A7F8000617DE4 /* ConfigurationManager.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
 		61E554DE2E37E2FE0083CF88 = {
 			isa = PBXGroup;
 			children = (
@@ -74,6 +92,7 @@
 				61E5551E2E37E67E0083CF88 /* Info.plist */,
 				61E555162E37E4B40083CF88 /* Shaders */,
 				61E555092E37E4750083CF88 /* Models */,
+				61A26CB82E3A7F8000617DE4 /* ViewModels */,
 				61E555062E37E4570083CF88 /* Views */,
 				61E554EA2E37E2FE0083CF88 /* HorusAIApp.swift */,
 				61E554EE2E37E3000083CF88 /* Assets.xcassets */,
@@ -101,6 +120,10 @@
 		61E555062E37E4570083CF88 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				61A26CBB2E3AA22F00617DE4 /* AjudaView.swift */,
+				61A26CBA2E3AA22F00617DE4 /* HistoricoView.swift */,
+				61A26CB02E3A7F5000617DE4 /* MainView.swift */,
+				61A26CB12E3A7F5000617DE4 /* SettingsView.swift */,
 				616C59EC2E3928D4000379AD /* CameraView.swift */,
 				616C59EA2E3928D4000379AD /* HorusAIView.swift */,
 				616C59EB2E3928D4000379AD /* ObjectFrame.swift */,
@@ -199,6 +222,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				616C59F52E3928E9000379AD /* YOLO.swift in Sources */,
+				61A26CBC2E3AA22F00617DE4 /* HistoricoView.swift in Sources */,
+				61A26CB22E3A7F5000617DE4 /* MainView.swift in Sources */,
 				616C59EE2E3928D4000379AD /* HorusAIView.swift in Sources */,
 				616C59EF2E3928D4000379AD /* ObjectFrame.swift in Sources */,
 				616C59F62E3928E9000379AD /* Speecher.swift in Sources */,
@@ -206,9 +231,12 @@
 				61E555052E37E4140083CF88 /* YOLOv3.mlmodel in Sources */,
 				616C59F82E3928E9000379AD /* GeminiApp.swift in Sources */,
 				616C59FA2E3928F6000379AD /* HorusAIShader.metal in Sources */,
+				61A26CBD2E3AA22F00617DE4 /* AjudaView.swift in Sources */,
 				616C59F02E3928D4000379AD /* CameraView.swift in Sources */,
+				61A26CB92E3A7F8000617DE4 /* ConfigurationManager.swift in Sources */,
 				61E554EB2E37E2FE0083CF88 /* HorusAIApp.swift in Sources */,
 				616C59ED2E3928D4000379AD /* PseudoMainView.swift in Sources */,
+				61A26CB32E3A7F5000617DE4 /* SettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
