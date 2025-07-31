@@ -83,7 +83,7 @@ class ConfigurationManager: ObservableObject {
         do {
             let (data, _) = try await URLSession.shared.data(from: url)
             if let jsonString = String(data: data, encoding: .utf8) {
-                print("Raw JSON string:\n\(jsonString)")
+                //print("Raw JSON string:\n\(jsonString)")
             } else {
                 print("Failed to convert data to string")
             }
@@ -132,7 +132,7 @@ class ConfigurationManager: ObservableObject {
                     print("Profile updated successfully")
                     
                     if let jsonString = String(data: data, encoding: .utf8) {
-                        print("Response JSON: \(jsonString)")
+                        //print("Response JSON: \(jsonString)")
                     }
                     
                 } else {

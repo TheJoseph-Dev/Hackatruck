@@ -60,10 +60,10 @@ class YOLO {
         var imgLabels: [ImageLabel] = []
         let request = VNCoreMLRequest(model: model) { request, error in
             if let results = request.results as? [VNRecognizedObjectObservation] {
-                print(results.count)
+                //print(results.count)
                 for observation in results {
                     let best = observation.labels[0]
-                    print("Label: " + String(best.identifier) + " - Confidence: " + String(best.confidence))
+                    //print("Label: " + String(best.identifier) + " - Confidence: " + String(best.confidence))
                     if best.confidence < threshold { continue; }
                     imgLabels.append(ImageLabel(name: best.identifier, confidence: best.confidence, boundingBox: observation.boundingBox))
                         //print(best.identifier)

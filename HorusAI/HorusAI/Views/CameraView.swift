@@ -94,7 +94,7 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
     
     // Frame captured from camera
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
-        if self.wait(time: 0.4) { return }
+        if self.wait(time: 0.3) { return }
         
         guard let buffer = CMSampleBufferGetImageBuffer(sampleBuffer) else { return }
         let ciImage = CIImage(cvPixelBuffer: buffer)
@@ -125,7 +125,7 @@ struct CameraView: UIViewControllerRepresentable {
         var parent: CameraView
         private var isProcessing = false
         private var frameBuffer: [[YOLO.ImageLabel]] = []
-        private let bufferLimit = 20
+        private let bufferLimit = 16
 
         init(_ parent: CameraView) {
             self.parent = parent
@@ -216,7 +216,7 @@ struct CameraViewWrapper: View {
                                 guard canCall else { return }
                                 canCall = false
                                 Task {
-                                    Speecher.shared.speak("Aguarde um momento enquanto obtemos informacoes do ambiente", language: manager.currentConfig.idioma, voice: manager.currentConfig.voz)
+                                    Speecher.shared.speak("Aguarde um momento enquanto obtemos Informações do ambiente", language: manager.currentConfig.idioma, voice: manager.currentConfig.voz)
                                     let gpsData = try await GPSAPI.shared.getClosestPoint()
                                     let prompt = Gemini.shared.createPrompt(from: self.predictions, at: gpsData, with: manager.currentConfig.idioma)
                                     let speechText = await Gemini.shared.call(prompt: prompt)
@@ -228,7 +228,7 @@ struct CameraViewWrapper: View {
                         .simultaneousGesture(
                             LongPressGesture(minimumDuration: Double(manager.currentConfig.toques))
                                 .onEnded { _ in
-                                    Speecher.shared.speak("Chamando numero de emergencia", language: manager.currentConfig.idioma, voice: manager.currentConfig.voz)
+                                    Speecher.shared.speak("Chamando número de emergência", language: manager.currentConfig.idioma, voice: manager.currentConfig.voz)
                                 }
                         )
                 }
@@ -250,7 +250,7 @@ struct CameraViewWrapper: View {
                 print(gpsData?.point.name)
                 print("Generating prompt...")
                 let prompt = Gemini.shared.createPrompt(from: self.predictions, at: gpsData, with: manager.currentConfig.idioma)
-                print("Prompt: \(prompt)")
+                //print("Prompt: \(prompt)")
                 
                 print("Calling Gemini...")
                 let speechText = await Gemini.shared.call(prompt: prompt)

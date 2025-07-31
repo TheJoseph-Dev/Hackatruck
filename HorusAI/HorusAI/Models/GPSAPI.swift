@@ -44,9 +44,12 @@ class GPSAPI: NSObject, CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let userLocation = locations.first else {
-            continuation?.resume(throwing: NSError(domain: "LocationError", code: -1, userInfo: [
-                NSLocalizedDescriptionKey: "Unable to retrieve location"
-            ]))
+            if let cont = continuation {
+                cont.resume(throwing: NSError(domain: "LocationError", code: -1, userInfo: [
+                    NSLocalizedDescriptionKey: "Unable to retrieve location"
+                ]))
+                continuation = nil
+            }
             return
         }
 
@@ -54,14 +57,17 @@ class GPSAPI: NSObject, CLLocationManagerDelegate {
             userLocation.distance(from: CLLocation(latitude: $0.coordinate.latitude, longitude: $0.coordinate.longitude)) <
             userLocation.distance(from: CLLocation(latitude: $1.coordinate.latitude, longitude: $1.coordinate.longitude))
         })
-        
-        if let closestPoint = closestPoint {
-            let distance = userLocation.distance(from: CLLocation(latitude: closestPoint.coordinate.latitude, longitude: closestPoint.coordinate.longitude))
-            continuation?.resume(returning: QueryData(point: closestPoint, distance: distance.magnitude, location: userLocation))
-        } else {
-            continuation?.resume(throwing: NSError(domain: "LocationError", code: -1, userInfo: [
-                NSLocalizedDescriptionKey: "No points available"
-            ]))
+
+        if let cont = continuation {
+            if let closestPoint = closestPoint {
+                let distance = userLocation.distance(from: CLLocation(latitude: closestPoint.coordinate.latitude, longitude: closestPoint.coordinate.longitude))
+                cont.resume(returning: QueryData(point: closestPoint, distance: distance.magnitude, location: userLocation))
+            } else {
+                cont.resume(throwing: NSError(domain: "LocationError", code: -1, userInfo: [
+                    NSLocalizedDescriptionKey: "No points available"
+                ]))
+            }
+            continuation = nil
         }
     }
     
