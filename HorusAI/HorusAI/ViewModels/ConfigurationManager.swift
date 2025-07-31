@@ -13,7 +13,7 @@ struct DecodeConfig: Identifiable, Codable {
 }
 
 struct UserConfig: Identifiable {
-    static let tapOptions = [2, 3, 5, 8]
+    static let holdOptions = [2, 3, 5, 8]
     static let voiceOptions = ["Male", "Female", "Taylor Swift", "Pelé"]
     static let languageOptions = ["pt-BR", "pt-PT", "en-US", "es-ES", "zh-CN", "ja-JP"]
 
@@ -26,7 +26,7 @@ struct UserConfig: Identifiable {
     var voz: String
     var idioma: String
     
-    init(nome: String, touches: Int = UserConfig.tapOptions[0], telefone: String, voz: String = UserConfig.voiceOptions[0], idioma: String = UserConfig.languageOptions[0]) {
+    init(nome: String, touches: Int = UserConfig.holdOptions[0], telefone: String, voz: String = UserConfig.voiceOptions[0], idioma: String = UserConfig.languageOptions[0]) {
         self.nome = nome
         self.toques = touches
         self.telefone = telefone
@@ -57,7 +57,7 @@ extension UserConfig {
             _rev: self._rev,
             id: self.id.uuidString,
             nome: self.nome,
-            toques: "\(toques) taps",
+            toques: "\(toques) seconds",
             telefone: self.telefone,
             voz: self.voz,
             idioma: self.idioma

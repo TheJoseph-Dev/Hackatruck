@@ -11,30 +11,32 @@ struct AjudaView: View {
                     .bold()
                     .padding(.bottom)
 
-                Text("Tela Principal (Início)")
+                Text("Início")
                     .font(.title2)
                     .bold()
-                Text("Esta é a sua tela inicial. Dê um duplo toque no círculo central para ativar a funcionalidade principal do aplicativo, como a câmera.")
+                Text("A primeira tela ao abrir o app. Dê um toque em quaisquer proximidades do círculo central para ativar a Live View, com a câmera e funcionalidade principal do aplicativo.")
 
-                Text("Menu")
+                Text("Configurações")
                     .font(.title2)
                     .bold()
-                Text("Toque no ícone de três linhas no canto superior esquerdo para abrir o menu de navegação.")
+                Text("Na tela inicial, acesse as configurações no canto superior direito para visualizar e editar suas preferências.")
+
+                Text("Live View")
+                    .font(.title2)
+                    .bold()
+                Text("Ao entrar na Live View, o app começará a escanear o ambiente automaticamente, é recomendado a orientação landscape para melhor eficácia. Após o escaneamento, em alguns segundos o app emitirá uma descrição sobre o ambiente. Após a primeira fala, próximas descrições podem ser ativadas com 1 toque em qualquer lugar da tela. Dê 2 toques para sair para a Tela Inicial. Segure uma quantidade predefinida de segundos para chamar o número de emergencia.")
 
                 Text("Meu Perfil")
                     .font(.title2)
                     .bold()
-                Text("No menu, acesse 'Ajustes' e depois 'Meu Perfil' para visualizar e editar suas informações.")
+                Text("No menu, acesse 'Meu Perfil' para visualizar e editar suas informações.")
 
+                /*
                 Text("Histórico")
                     .font(.title2)
                     .bold()
                 Text("Acesse 'Histórico' no menu para ver uma lista dos seus últimos locais registrados.")
-
-                Text("Ajuda")
-                    .font(.title2)
-                    .bold()
-                Text("Esta tela que você está vendo agora fornece informações sobre como usar cada parte do aplicativo.")
+                */
             }
             .padding()
         }

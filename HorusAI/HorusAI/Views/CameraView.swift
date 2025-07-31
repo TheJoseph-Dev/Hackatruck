@@ -207,6 +207,9 @@ struct CameraViewWrapper: View {
                     HorusAIView(rippleProgress: $rippleProgress, discard: 1.0)
                         .gesture(
                             TapGesture(count: 2).onEnded {
+                                let generator = UINotificationFeedbackGenerator()
+                                generator.prepare()
+                                generator.notificationOccurred(.success)
                                 Speecher.shared.stopSpeaking()
                                 dismiss()
                             }.exclusively(before: TapGesture(count: 1).onEnded {
@@ -234,7 +237,7 @@ struct CameraViewWrapper: View {
             }
         }
         .onAppear {
-            Speecher.shared.speak("Iniciando o HorusAI! Aguarde um momento enquanto obtemos informacoes do ambiente", language: manager.currentConfig.idioma, voice: manager.currentConfig.voz)
+            Speecher.shared.speak("Iniciando o HorusAI! Aguarde um momento enquanto obtemos informações do ambiente", language: manager.currentConfig.idioma, voice: manager.currentConfig.voz)
         }
         .onChange(of: predictions) {
             if hasLoadedFramebuffers { return; }

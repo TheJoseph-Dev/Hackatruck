@@ -35,6 +35,10 @@ struct MainView: View {
                         ZStack {
                             HorusAIView(rippleProgress: $rippleProgress)
                                 .onTapGesture {
+                                    let generator = UINotificationFeedbackGenerator()
+                                    generator.prepare()
+                                    generator.notificationOccurred(.success)
+                                    
                                     rippleProgress = 0
                                     withAnimation(.linear(duration: 1.5)) {
                                         rippleProgress = 1
@@ -75,7 +79,7 @@ struct MainView: View {
                             Text("Menu")
                                 .font(.largeTitle).bold().padding(.top, 50)
 
-                            Button("Histórico") { }
+                            //Button("Histórico") { }
                             Button("Ajuda") {
                                 showHelp = true
                             }

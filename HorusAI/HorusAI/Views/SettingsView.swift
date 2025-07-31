@@ -16,7 +16,7 @@ struct SettingsView: View {
             
             Section(header: Text("Emergência")) {
                 Picker("Atalho", selection: $config.toques) {
-                    ForEach(UserConfig.tapOptions, id: \.self) { Text("Segundos: " + String($0)) }
+                    ForEach(UserConfig.holdOptions, id: \.self) { Text("Segundos: " + String($0)) }
                 }
                 TextField("Número de emergência", text: $config.telefone)
                     .keyboardType(.phonePad)
@@ -34,7 +34,7 @@ struct SettingsView: View {
                 }
             }
             
-            Section(header: Text("Localizacoes")) {
+            Section(header: Text("Localizações")) {
                 List(GPSAPI.points, id: \.name) { pt in
                     HStack {
                         Text(pt.name)
